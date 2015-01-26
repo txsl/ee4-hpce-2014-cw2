@@ -15,3 +15,9 @@ build/sox-14.4.1/src/sox : build/sox-14.4.1/Makefile
 
 local/bin/sox : build/sox-14.4.1/src/sox
 	cd build/sox-14.4.1 && $(MAKE) install
+
+
+clean :
+	rm -rf packages/*
+	rm -rf build/*
+	rm -rf local/*
