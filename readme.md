@@ -21,7 +21,7 @@ So the next three courseworks will still be released on a week by week
 basis, with two weeks to do each:
 
 - [CW2](https://github.com/HPCE/hpce-2014-cw2): Issued Jan 22nd, due Feb 5th ** You are here**
-- CW3: Issued Jan 29th, due Feb 12th
+- [CW3](https://github.com/HPCE/hpce-2014-cw2): Issued Jan 29th, due Feb 12th
 - CW4: Issued Feb 5th, due Feb 19th
 
 As part of the _specification_ for the formative courseworks
@@ -1375,6 +1375,10 @@ then hopefully most of the sine-wave disappears. If you double up the filter:
 
 then it should be completely gone.
 
+_Note: I would think most machines could handle this FIR filter on two CPUs,
+but if it becomes choppy, check whether your CPUs are overloaded, i.e. both
+fir\_filter processes are permanently at 100% CPU._
+
 Note that I'm not looking for bit-exact results here -- I've deliberately
 left things ambiguous enough to give you some freedom of implementation
 (e.g. things like buffering), so don't worry if you get slightly different
@@ -1521,6 +1525,11 @@ This should create a submission tarball in the directory below
 your work. Note that it will include the git repository (.git),
 which will contain the history of your work.
 
+_Note: on some systems the `prepare_submissions.sh` file appears
+to have [windows line endings](https://github.com/HPCE/hpce-2014-cw2/issues/12),
+though I've been unable to replicate. This can be fixed with the
+`dos2unix` program if it happens._
+
 Before submitting, you should do a number of checks to make sure
 it works:
 
@@ -1528,6 +1537,12 @@ it works:
 2. `make all` in the base of the submission to build everything.
 3. Go into the audio directory and run `make tools`.
 4. Choose an mp3, and `./mp3_file_src.sh your_mp3.mp3 | ./corrupter.sh | ./all_firs_direct.sh > /dev/null`.
+
+_Note: for some systems it seems permissions
+[are not preserved](https://github.com/HPCE/hpce-2014-cw2/issues/13), but unfortunately
+I can't replicate. I will commit to forcing permissions of scripts to execute and
+converting dos line endings to unix in the testing, so don't worry too much if
+you have to manually fix it up._
 
 If that all works, submit your tarball via blackboard.
 
