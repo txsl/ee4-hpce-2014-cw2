@@ -1,4 +1,6 @@
 SRC_URL = http://cas.ee.ic.ac.uk/people/dt10/teaching/2013/hpce/cw2
+
+# Thanks http://stackoverflow.com/questions/18136918/how-to-get-current-directory-of-your-makefile
 PWD = $(shell pwd)
 
 packages/sox-14.4.1.tar.gz :
@@ -35,7 +37,9 @@ local/bin/lame : build/lame-3.99.5/src/lame
 
 tools : local/bin/lame local/bin/sox
 
-clean :
+
+# Clean the directories to test make (again) quickly.
+wipe :
 	rm -rf packages/*
 	rm -rf build/*
 	rm -rf local/*
