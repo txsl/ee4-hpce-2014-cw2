@@ -9,14 +9,37 @@
 
 int main(int argc, char *argv[])
 {	
-	while(1){
-		// Buffer containing one stereo sample sample (left and right, both 16 bit).
-		int16_t samples[2];
-		unsigned cbBuffer=sizeof(samples);	// size in bytes of  one stereo sample (4 bytes)
+	int n;
+	if(argc < 2)
+	{
+		// Ie if the extra argument not passed in, default to 512
+		n = 512;
+	}
+	else
+	{
+		n = atoi(argv[1]);
 		
-		// Read one sample from input
+		// Check for any cheeky inputs
+		if(n<1)
+		{
+			fprintf(stderr, "Cannot have a 0 or -ve number of samples. Exiting.\n");
+			return 0;
+		}
+	}
+	
+	fprintf(stderr, "Processing %i stereo samples at a time\n", n);
+	
+	// Taking in to account the stereo channels
+	n = 2*n;
+
+	while(1){
+		// Buffer containing n stereo samples (left and right, both 16 bit)
+		int16_t samples[n];
+		unsigned cbBuffer=sizeof(samples);	// size of bytes of n stereo samples (4 bytes per stereo sample set)
+		
+		// Read n samples from input
 		// Currently there is a lot of overhead here, as we have all the overhead of a system function call,
-		// but only get four bytes in return.
+		// but only get n*four bytes in return.
 		int got=read(STDIN_FILENO, samples, cbBuffer);
 		if(got<0){
 			fprintf(stderr, "%s : Read from stdin failed, error=%s.", argv[0], strerror(errno));
@@ -28,8 +51,8 @@ int main(int argc, char *argv[])
 			exit(1);
 		}
 		
-		// Copy one sample to output
-		// And again, a lot of overhead just to get four bytes.
+		// Copy n samples to output
+		// And again, a lot of overhead just to get n*four bytes.
 		int done=write(STDOUT_FILENO, samples, cbBuffer);
 		if(done<0){
 			fprintf(stderr, "%s : Write to stdout failed, error=%s.", argv[0], strerror(errno));
