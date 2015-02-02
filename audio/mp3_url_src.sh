@@ -1,2 +1,2 @@
 #!/bin/bash
-curl $1 | ../local/bin/lame --mp3input --decode - -
+curl $1 | ../local/bin/lame -t --mp3input --decode - -
