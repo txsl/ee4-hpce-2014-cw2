@@ -23,7 +23,7 @@ int main(int argc, char *argv[])
 		if(n<1)
 		{
 			fprintf(stderr, "Cannot have a 0 or -ve number of samples. Exiting.\n");
-			return 0;
+			return -1;
 		}
 	}
 	
