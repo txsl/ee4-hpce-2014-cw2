@@ -42,6 +42,7 @@ int main(int argc, char *argv[]){
         // Thanks http://stackoverflow.com/questions/24716250/c-store-read-binary-file-into-buffer
         // for the inspiration to use fread
 
+        // read samples from both file descriptors
         got=fread(samples_1, sizeof(int16_t), N, inp_1);
         if(got<0){
             fprintf(stderr, "%s : Read from %s failed, error=%s.", argv[0], argv[1], strerror(errno));
@@ -65,10 +66,12 @@ int main(int argc, char *argv[]){
         }
 
 
+        // Take the mean of both signals. Save back to one of the arrays to save memory
         for(i=0 ;i<N; i++){
-            samples_1[i] = (samples_1[i] + samples_2[i])/2.0;
+            samples_1[i] = (samples_1[i] + samples_2[i])/2;
         }
 
+        // Write samples to stdout
         done=write(STDOUT_FILENO, samples_1, cbBuffer);
         if(done<0){
             fprintf(stderr, "%s : Write to stdout failed, error=%s.", argv[0], strerror(errno));
