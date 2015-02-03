@@ -47,7 +47,7 @@ int main(int argc, char *argv[])
 		}else if(got==0){
 			break;	 // end of file
 		}else if(got!=cbBuffer){
-			fprintf(stderr, "%s : Did not receive expected number of bytes.\n", argv[0]);
+			fprintf(stderr, "%s : Did not receive expected number of bytes.\nInstead got %i, but expected %i...\n", argv[0], got, cbBuffer);
 			exit(1);
 		}
 		
