@@ -9,10 +9,11 @@
 
 int main(int argc, char *argv[]){
 
-    float f;
-    float t = 0;
-    float time_gap = 1/44100.0;
-    float calc;
+    // Cast all as doubles to ensure max accuracy (little time difference)
+    double f;
+    double t = 0;
+    double time_gap = 1/44100.0;
+    double calc;
     int N = 512;
     int i = 0;
 
@@ -23,6 +24,8 @@ int main(int argc, char *argv[]){
     }
     else
     {
+        // According to http://www.cplusplus.com/reference/cstdlib/atof/ ,
+        // it returns a double (hence f cast as double)
         f = atof(argv[1]);
     }
 
