@@ -79,9 +79,10 @@ int main(int argc, char *argv[]){
         // calc_2 = 0;
 
         // Another SO: http://stackoverflow.com/questions/4066522/setting-an-array-to-one-value
-        // memset(calc, 0, 2 * N * sizeof(calc[0]));
-        double calc[2];
-        int16_t output[2];
+
+        double calc[2*N];
+        int16_t output[2*N];
+        memset(calc, 0, 2 * N * sizeof(calc[0]));
         // calc[0] = 0;
         // calc[1] = 0;
         // calc[2] = 0;
@@ -94,10 +95,10 @@ int main(int argc, char *argv[]){
         for(j=0; j<N; j++){         
             for(i=0; i<lines; i=i+2){
                 // fprintf(stderr, "%s : ptr referencing %i and %i\n", argv[0], (2*j)+i+ptr, (2*j)+1+i+ptr);
-                // calc[j] = buffer[(2*j)+i+ptr]*coeffs[i/2] + calc[j];
-                calc[j] = (double) buffer[0];
-                calc[j+1] = (double) buffer[1];
-                // calc[j+1] = buffer[(2*j)+1+i+ptr]*coeffs[i] + calc[j+1];
+                calc[j] = buffer[(2*j)+i+ptr]*coeffs[i/2] + calc[j];
+                // calc[j] = (double) buffer[0];
+                // calc[j+1] = (double) buffer[1];
+                calc[j+1] = buffer[(2*j)+1+i+ptr]*coeffs[i/2] + calc[j+1];
             }
             output[j] = (int16_t) calc[j];
             output[j+1] = (int16_t) calc[j+1];
@@ -108,6 +109,7 @@ int main(int argc, char *argv[]){
         // calc[1] = buffer[1];
         ptr = ptr + 2*N;
         ptr = ptr % buf_len;
+        ptr = 0;
 
         // fprintf(stderr, "%s : ptr = %i \n", argv[0], ptr);
 
