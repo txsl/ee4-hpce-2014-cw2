@@ -7,7 +7,7 @@
 
 #include <unistd.h>
 
-#define N 1
+#define N 1024
 
 int main(int argc, char *argv[]){
 
@@ -91,14 +91,16 @@ int main(int argc, char *argv[]){
         // // calc[20] = 0;
         // int s = sizeof(calc)/sizeof(double);
         // fprintf(stderr, "%i\n", sizeof(calc[0]));
-
-        for(j=0; j<N; j++){         
-            for(i=0; i<lines; i=i+2){
-                // fprintf(stderr, "%s : ptr referencing %i and %i\n", argv[0], (2*j)+i+ptr, (2*j)+1+i+ptr);
-                calc[j] = buffer[(2*j)+i+ptr]*coeffs[i/2] + calc[j];
+        int point0, point1;
+        for(j=0; j<2*N; j=j+2){         
+            for(i=0; i<2*lines; i=i+2){
+                point0=j+i+ptr;
+                point1=j+1+i+ptr;
+                fprintf(stderr, "%s : ptr referencing %i and %i. i=%i, j=%i\n", argv[0], point0, point1, i, j);
+                calc[j] = buffer[point0]*coeffs[i/2] + calc[j];
                 // calc[j] = (double) buffer[0];
                 // calc[j+1] = (double) buffer[1];
-                calc[j+1] = buffer[(2*j)+1+i+ptr]*coeffs[i/2] + calc[j+1];
+                calc[j+1] = buffer[point1]*coeffs[i/2] + calc[j+1];
             }
             output[j] = (int16_t) calc[j];
             output[j+1] = (int16_t) calc[j+1];
@@ -107,8 +109,8 @@ int main(int argc, char *argv[]){
         // for(i=0; i<N; )
         // calc[0] = buffer[0];
         // calc[1] = buffer[1];
-        ptr = ptr + 2*N;
-        ptr = ptr % buf_len;
+        // ptr = ptr + 2*N;
+        // ptr = ptr % buf_len;
         ptr = 0;
 
         // fprintf(stderr, "%s : ptr = %i \n", argv[0], ptr);
