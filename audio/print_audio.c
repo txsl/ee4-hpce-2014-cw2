@@ -21,6 +21,7 @@ int main(int argc, char *argv[]){
         // Buffer containing n stereo samples (left and right, both 16 bit).
         int16_t samples[n];
         unsigned cbBuffer=sizeof(samples);  // size in bytes of n stereo samples (n*4 bytes)
+        // fprintf(stderr, "cbBuffer = %i, calcman = %i \n", cbBuffer, 2*n );
         
         // Read n samples from input
         // Currently there is a lot of overhead here, as we have all the overhead of a system function call,

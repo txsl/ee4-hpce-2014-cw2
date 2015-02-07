@@ -95,7 +95,10 @@ int main(int argc, char *argv[]){
     // return 0;
 
     int16_t buffer[buf_len];
-    memset(buffer, 0, 2 * N * sizeof(buffer[0])); // SO: http://stackoverflow.com/questions/4066522/setting-an-array-to-one-value
+    // memset(buffer, 0, 2 * N * sizeof(buffer[0])); // SO: http://stackoverflow.com/questions/4066522/setting-an-array-to-one-value
+        for(i=0; i<2*N; i++){
+            buffer[i] = 0;
+        }
 
     // for(i=0; i<N*2; i++){
     //     fprintf(stderr, "%i\n", buffer[i]);
@@ -132,8 +135,8 @@ int main(int argc, char *argv[]){
             buffer[i] = 0;
         }
 
-        buffer[ptr] = samples[0];
-        buffer[ptr+1] = samples[1];
+        buffer[0] = samples[0];
+        buffer[1] = samples[1];
         // fprintf(stderr, "buf0=%i, buf1=%i, samp0=%i, samp1=%i\n", buffer[ptr], buffer[ptr+1], samples[0], samples[1]);
         // for(i=0; i<2*N; i++){
         //     buffer[ptr+i] = samples[i];
@@ -143,42 +146,52 @@ int main(int argc, char *argv[]){
 
         /*---  Set some variables to be used during calculation and output  ---*/
         double calc[2*N];
-        memset(calc, 0, 2 * N * sizeof(calc[0]));
+        
+        for(i=0; i<2*N; i++){
+            calc[i] = 0;
+        }
+
         int16_t output[2*N];
 
+        for(i=0; i<buf_len; i=i+2)
+        {
+            calc[0] = buffer[i]*coeffs[i/2] + calc[0];
+            calc[1] = buffer[i+1]*coeffs[i/2] + calc[1];
+        }
+
         // for(j=0; j<2*N; j=j+2){
-            int coef_idx = 0;
-            for(i=0; i<(ptr-1); i=i+2){
-                // fprintf(stderr, "\nhello2\n");
-                // point0 = calc_pointer(i, 0, ptr, 0, buf_len);
-                // point1 = calc_pointer(i, 0, ptr, 1, buf_len);
-                if(buffer[point0] != 0 || buffer[point1 != 0]){
-                fprintf(stderr, "%s : referencing %i and %i. i=%i, ptr=%i, buf0=%i, buf1=%i, samp0=%i, samp1=%i\n", argv[0], point0, point1, i, ptr, buffer[point0], buffer[point1], samples[0], samples[1]);
-                // fprintf(stderr, "%i\n", point0);
-                }
-                calc[0] = buffer[i]*coeffs[ptr + (i/2)] + calc[0];
-                calc[1] = buffer[i+1]*coeffs[ptr + (i/2)] + calc[1];
-                // fprintf(stderr, "calc value l: %f, r: %f \n", calc[j], calc[j+1]);
-                // fprintf(stderr, "%f\n", coeffs[i/2]);
-                // debug_print("\nhello\n");
+            // int coef_idx = 0;
+            // for(i=0; i<(ptr-1); i=i+2){
+            //     // fprintf(stderr, "\nhello2\n");
+            //     // point0 = calc_pointer(i, 0, ptr, 0, buf_len);
+            //     // point1 = calc_pointer(i, 0, ptr, 1, buf_len);
+            //     if(buffer[point0] != 0 || buffer[point1 != 0]){
+            //     fprintf(stderr, "%s : referencing %i and %i. i=%i, ptr=%i, buf0=%i, buf1=%i, samp0=%i, samp1=%i\n", argv[0], point0, point1, i, ptr, buffer[point0], buffer[point1], samples[0], samples[1]);
+            //     // fprintf(stderr, "%i\n", point0);
+            //     }
+            //     calc[0] = buffer[i]*coeffs[ptr + (i/2)] + calc[0];
+            //     calc[1] = buffer[i+1]*coeffs[ptr + (i/2)] + calc[1];
+            //     // fprintf(stderr, "calc value l: %f, r: %f \n", calc[j], calc[j+1]);
+            //     // fprintf(stderr, "%f\n", coeffs[i/2]);
+            //     // debug_print("\nhello\n");
 
-            }
+            // }
 
-            for(i=ptr; i<((2*lines)-1); i=i+2){
-                // fprintf(stderr, "\nhello2\n");
-                // point0 = calc_pointer(i, 0, ptr, 0, buf_len);
-                // point1 = calc_pointer(i, 0, ptr, 1, buf_len);
-                if(buffer[point0] != 0 || buffer[point1 != 0]){
-                fprintf(stderr, "%s : referencing %i and %i. i=%i, ptr=%i, buf0=%i, buf1=%i, samp0=%i, samp1=%i\n", argv[0], point0, point1, i, ptr, buffer[point0], buffer[point1], samples[0], samples[1]);
-                // fprintf(stderr, "%i\n", point0);
-                }
-                calc[0] = buffer[i]*coeffs[ptr + (i/2)] + calc[0];
-                calc[1] = buffer[i+1]*coeffs[ptr + (i/2)] + calc[1];
-                // fprintf(stderr, "calc value l: %f, r: %f \n", calc[j], calc[j+1]);
-                // fprintf(stderr, "%f\n", coeffs[i/2]);
-                // debug_print("\nhello\n");
+            // for(i=ptr; i<((2*lines)-1); i=i+2){
+            //     // fprintf(stderr, "\nhello2\n");
+            //     // point0 = calc_pointer(i, 0, ptr, 0, buf_len);
+            //     // point1 = calc_pointer(i, 0, ptr, 1, buf_len);
+            //     if(buffer[point0] != 0 || buffer[point1 != 0]){
+            //     fprintf(stderr, "%s : referencing %i and %i. i=%i, ptr=%i, buf0=%i, buf1=%i, samp0=%i, samp1=%i\n", argv[0], point0, point1, i, ptr, buffer[point0], buffer[point1], samples[0], samples[1]);
+            //     // fprintf(stderr, "%i\n", point0);
+            //     }
+            //     calc[0] = buffer[i]*coeffs[ptr + (i/2)] + calc[0];
+            //     calc[1] = buffer[i+1]*coeffs[ptr + (i/2)] + calc[1];
+            //     // fprintf(stderr, "calc value l: %f, r: %f \n", calc[j], calc[j+1]);
+            //     // fprintf(stderr, "%f\n", coeffs[i/2]);
+            //     // debug_print("\nhello\n");
 
-            }
+            // }
 
             fprintf(stdout, "%i, %i\n", buffer[ptr], buffer[ptr+1]);
             output[0] = (int16_t) calc[0];
@@ -190,6 +203,11 @@ int main(int argc, char *argv[]){
         ptr = ptr - 2;
         if(ptr>=buf_len)
             ptr = 0;
+
+        for(i=2; i<buf_len; i=i+2){
+            buffer[i] = buffer[i-2];
+            buffer[i+1] = buffer[i-1];
+        }
         // ptr = ptr % buf_len;
 
         // fprintf(stderr, "%s : ptr = %i \n", argv[0], ptr);

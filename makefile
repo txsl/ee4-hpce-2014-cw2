@@ -37,6 +37,10 @@ local/bin/lame : build/lame-3.99.5/src/lame
 
 tools : local/bin/lame local/bin/sox
 
+filters :
+    cd audio && $(MAKE)
+
+all : tools filters
 
 # Clean the directories to test make (again) quickly.
 wipe :

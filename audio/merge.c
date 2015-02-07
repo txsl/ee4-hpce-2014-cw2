@@ -17,7 +17,7 @@ int main(int argc, char *argv[]){
     int i;
 
     if(argc<3){
-        fprintf(stderr, "Not enough arguments given. Two filepaths needed. Exiting");
+        fprintf(stderr, "%s : Not enough arguments given. 2 Filepaths needed. Exiting", argv[0]);
         return -1;
     }
 
