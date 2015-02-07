@@ -7,7 +7,7 @@
 
 #include <unistd.h>
 
-#define N 8
+#define N 128
 
 void debug_print(char *stmt){
     fprintf(stderr, "%s\n", stmt);
@@ -15,10 +15,10 @@ void debug_print(char *stmt){
 
 int calc_pointer(int i, int j, int ptr, int right, int buf_len){
     int ret_ptr;
-    ret_ptr = (j + ptr - i/2);
+    ret_ptr = (j + ptr - i);
     
     if(ret_ptr < 0){
-        ret_ptr = buf_len + ret_ptr;
+        ret_ptr = buf_len + ret_ptr; // - 1;
     }
 
     if(right){
@@ -136,17 +136,21 @@ int main(int argc, char *argv[]){
                 // fprintf
                 point0 = calc_pointer(i, j, ptr, 0, buf_len);
                 point1 = calc_pointer(i, j, ptr, 1, buf_len);
-                fprintf(stderr, "%s : referencing %i and %i. i=%i, j=%i, ptr=%i\n", argv[0], point0, point1, i/2, j, ptr);
-                calc[point0] = buffer[point0]*coeffs[i/2] + calc[point0];
-                calc[point1] = buffer[point1]*coeffs[i/2] + calc[point1];
+                // fprintf(stderr, "%s : referencing %i and %i. i=%i, j=%i, ptr=%i\n", argv[0], point0, point1, i/2, j, ptr);
+                calc[j] = buffer[point0]*coeffs[i/2] + calc[j];
+                calc[j+1] = buffer[point1]*coeffs[i/2] + calc[j+1];
+                // fprintf(stderr, "calc value l: %f, r: %f \n", calc[j], calc[j+1]);
+                // debug_print("\nhello\n");
                 // fprintf(stderr, "here \n");
                 man_idx = man_idx + 2;
             }
-            fprintf(stderr, "--\n");
+            
             output[j] = (int16_t) calc[j];
             output[j+1] = (int16_t) calc[j+1];
+            // fprintf(stderr, "output value l: %f, r: %f \n", output[j], output[j+1]);
+            // fprintf(stderr, "--\n");
         }
-        fprintf(stderr, "-----\n");
+        // fprintf(stderr, "-----\n");
         // fprintf(stderr, "%lf in, %lf out", buffer[0], calc[0]);
         // for(i=0; i<N; )
         // calc[0] = buffer[0];
