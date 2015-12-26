@@ -131,9 +131,9 @@ int main(int argc, char *argv[]){
             exit(1);
         }
 
-        for(i=0; i<buf_len; i++){
-            buffer[i] = 0;
-        }
+        // for(i=0; i<buf_len; i++){
+        //     buffer[i] = 0;
+        // }
 
         buffer[0] = samples[0];
         buffer[1] = samples[1];
